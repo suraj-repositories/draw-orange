@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #1e1f22;
+  --bg-secondary: #25262a;
+  --bg-hover: #303136;
+  --bg-active: #3a2a1c;
+  --border-color: #3a3b40;
+  --text-primary: #f1f1f1;
+  --text-secondary: #a7a9ad;
+  --primary: #f57c00;
+  --primary-hover: #fb8c00;
+  --primary-pressed: #ef6c00;
+  --toolbar-height: 50px;
+}
+
+body {
+  background-color: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+}

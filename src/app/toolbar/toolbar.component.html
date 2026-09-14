@@ -1,0 +1,159 @@
+<div class="app-toolbar">
+
+  <!-- Left -->
+  <div class="app-toolbar-left">
+
+    <div class="toolbar-group">
+      <button class="toolbar-btn active" type="button" title="Select">
+        <i class="bi bi-cursor"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Pen">
+        <i class="bi bi-pencil"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Highlighter">
+        <i class="bi bi-highlighter"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Eraser">
+        <i class="bi bi-eraser"></i>
+      </button>
+    </div>
+
+    <span class="toolbar-separator"></span>
+
+    <div class="toolbar-group">
+      <button class="toolbar-btn" type="button" title="Line">
+        <i class="bi bi-slash-lg"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Rectangle">
+        <i class="bi bi-square"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Circle">
+        <i class="bi bi-circle"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Arrow">
+        <i class="bi bi-arrow-up-right"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Text">
+        <i class="bi bi-type"></i>
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- Right -->
+  <div class="app-toolbar-right">
+
+    <div class="toolbar-group">
+
+      <button class="toolbar-btn" type="button" title="Undo">
+        <i class="bi bi-arrow-counterclockwise"></i>
+      </button>
+
+      <button class="toolbar-btn" type="button" title="Redo">
+        <i class="bi bi-arrow-clockwise"></i>
+      </button>
+
+    </div>
+
+    <span class="toolbar-separator"></span>
+
+    <div class="toolbar-group">
+
+      <button class="toolbar-btn" type="button" title="Zoom Out">
+        <i class="bi bi-dash-lg"></i>
+      </button>
+
+      <span class="toolbar-zoom">100%</span>
+
+      <button class="toolbar-btn" type="button" title="Zoom In">
+        <i class="bi bi-plus-lg"></i>
+      </button>
+
+    </div>
+
+    <span class="toolbar-separator"></span>
+
+
+    <!-- Avatar -->
+    <button class="toolbar-btn avatar-btn" type="button" title="Profile">
+      <img
+        src="https://placehold.co/400"
+        alt="Profile"
+        class="avatar"
+      >
+    </button>
+
+
+    <span class="toolbar-separator"></span>
+
+
+    <!-- More Dropdown -->
+    <div class="toolbar-dropdown">
+
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="More"
+        (click)="toggleMoreMenu()"
+        [class.active]="isMoreMenuOpen"
+        [attr.aria-expanded]="isMoreMenuOpen"
+      >
+        <i class="bi bi-three-dots"></i>
+      </button>
+
+
+      @if (isMoreMenuOpen) {
+
+        <div class="dropdown-menu">
+
+          <button class="dropdown-item" type="button">
+            <i class="bi bi-trash3"></i>
+            <span>Clear canvas</span>
+          </button>
+
+          <button class="dropdown-item" type="button">
+            <i class="bi bi-download"></i>
+            <span>Export</span>
+          </button>
+
+          <button class="dropdown-item" type="button">
+            <i class="bi bi-upload"></i>
+            <span>Import</span>
+          </button>
+
+          <div class="dropdown-divider"></div>
+
+          <button class="dropdown-item" type="button">
+            <i class="bi bi-grid-3x3"></i>
+            <span>Show grid</span>
+          </button>
+
+          <button class="dropdown-item" type="button">
+            <i class="bi bi-arrows-fullscreen"></i>
+            <span>Fullscreen</span>
+          </button>
+
+          <div class="dropdown-divider"></div>
+
+          <button class="dropdown-item" type="button">
+            <i class="bi bi-gear"></i>
+            <span>Settings</span>
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>
