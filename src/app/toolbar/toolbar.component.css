@@ -37,24 +37,16 @@
 .toolbar-btn {
   width: 36px;
   height: 36px;
-
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   padding: 0;
-
   border: none;
   border-radius: 6px;
-
   background: transparent;
-
   color: var(--text-secondary);
-
   font-size: 17px;
-
   cursor: pointer;
-
   transition:
     background-color 0.15s ease,
     color 0.15s ease,
@@ -90,11 +82,8 @@
 .toolbar-separator {
   width: 1px;
   height: 26px;
-
   margin: 0 6px;
-
   background: var(--border-color);
-
   flex-shrink: 0;
 }
 
@@ -112,14 +101,10 @@
 
 .toolbar-zoom {
   min-width: 42px;
-
   padding: 0 4px;
-
   text-align: center;
-
   font-size: 13px;
   font-weight: 500;
-
   color: var(--text-secondary);
 }
 
@@ -174,53 +159,35 @@
 
 .dropdown-menu {
   position: absolute;
-
   top: calc(100% + 8px);
   right: 0;
-
   min-width: 190px;
-
   padding: 6px;
-
   background: var(--bg-secondary);
-
   border: 1px solid var(--border-color);
   border-radius: 8px;
-
   box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.25),
     0 2px 6px rgba(0, 0, 0, 0.15);
-
   z-index: 1000;
-
   animation: dropdown-in 0.12s ease-out;
 }
 
 .dropdown-item {
   width: 100%;
   height: 36px;
-
   display: flex;
   align-items: center;
-
   gap: 10px;
-
   padding: 0 10px;
-
   border: none;
   border-radius: 6px;
-
   background: transparent;
-
   color: var(--text-primary);
-
   font-family: inherit;
   font-size: 13px;
-
   text-align: left;
-
   cursor: pointer;
-
   transition:
     background-color 0.15s ease,
     color 0.15s ease;
@@ -232,13 +199,10 @@
 
 .dropdown-item i {
   width: 18px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 16px;
-
   color: var(--text-secondary);
 }
 
@@ -248,9 +212,7 @@
 
 .dropdown-divider {
   height: 1px;
-
   margin: 5px 4px;
-
   background: var(--border-color);
 }
 

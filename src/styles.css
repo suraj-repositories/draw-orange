@@ -16,8 +16,19 @@
   --toolbar-height: 50px;
 }
 
+[data-theme="light"]{
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --bg-hover: #f0f1f3;
+  --bg-active: #fff3e0;
+  --border-color: #e1e3e6;
+  --text-primary: #1f1f1f;
+  --text-secondary: #6b7075;
+}
+
 body {
   background-color: var(--bg-primary);
   margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
