@@ -1,59 +1,76 @@
-# DrawOrange
+# Draw Orange (Multiuser Whiteboard) 
+ 
+**🚧 Status: Under Development** 
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+A collaborative real-time whiteboard designed for **online meetings, classrooms, brainstorming, and team collaboration**.
 
-## Development server
+## Features
 
-To start a local development server, run:
+* Real-time multiuser collaboration
+* Drawing, shapes, text, and eraser tools
+* Shared whiteboard sessions
+* Clean and responsive UI
+* Suitable for meetings and online classes
+* Extensible architecture for future collaboration features
+
+## Screenshots
+
+<div style="display: flex; flex-direction: column; gap: 10px;">
+
+  <div style="display: flex; gap: 10px;">
+    <img src="screenshots/oranbyte1.png" alt="Screen Recorder" width="99%" style="border: 2px solid lightgreen"/>
+  </div>
+
+</div>
+
+## Tech Stack
+
+* **Angular**
+* **TypeScript**
+* **HTML5 Canvas**
+* **CSS3**
+
+## Project Structure
+
+```text
+whiteboard/
+├── canvas/       # Canvas rendering & interaction
+├── toolbar/      # Whiteboard tools
+├── models/       # Data models
+└── services/     # Drawing & state management
+```
+
+## Getting Started
 
 ```bash
+git clone <repository-url>
+cd <project-directory>
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200` in your browser.
 
-## Code scaffolding
+## Use Cases
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+* Online meetings
+* Virtual classrooms
+* Team brainstorming
+* Project planning
+* Diagramming and explanations
 
-```bash
-ng generate component component-name
-```
+## Roadmap
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+* [ ] WebSocket-based real-time sync
+* [ ] User presence & cursors
+* [ ] Rooms and permissions
+* [ ] Undo/redo synchronization
+* [ ] Board persistence & export
+* [ ] Sticky notes and advanced shapes
 
-```bash
-ng generate --help
-```
+> **Goal:** Provide a simple shared visual workspace for people to **think, teach, plan, and collaborate together**.
 
-## Building
 
-To build the project run:
+ 
 
-```bash
-ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
