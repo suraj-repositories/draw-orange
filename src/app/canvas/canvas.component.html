@@ -1,3 +1,11 @@
-<div class="canvas-area">
-  <canvas #canvasElement></canvas>
+<div class="canvas-container">
+
+  <canvas
+    #canvasElement
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointerleave)="onPointerUp($event)"
+  ></canvas>
+
 </div>

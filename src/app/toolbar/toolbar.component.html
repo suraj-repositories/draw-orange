@@ -1,63 +1,151 @@
 <div class="app-toolbar">
 
   <!-- Left -->
+
   <div class="app-toolbar-left">
 
     <div class="toolbar-group">
-      <button class="toolbar-btn active" type="button" title="Select">
+
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Select"
+        (click)="selectTool(Tool.SELECT)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.SELECT
+        "
+      >
         <i class="bi bi-cursor"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Pen">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Pen"
+        (click)="selectTool(Tool.PEN)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.PEN
+        "
+      >
         <i class="bi bi-pencil"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Highlighter">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Highlighter"
+        (click)="selectTool(Tool.HIGHLIGHTER)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.HIGHLIGHTER
+        "
+      >
         <i class="bi bi-highlighter"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Eraser">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Eraser"
+        (click)="selectTool(Tool.ERASER)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.ERASER
+        "
+      >
         <i class="bi bi-eraser"></i>
       </button>
+
     </div>
 
     <span class="toolbar-separator"></span>
 
     <div class="toolbar-group">
-      <button class="toolbar-btn" type="button" title="Line">
+
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Line"
+        (click)="selectTool(Tool.LINE)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.LINE
+        "
+      >
         <i class="bi bi-slash-lg"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Rectangle">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Rectangle"
+        (click)="selectTool(Tool.RECTANGLE)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.RECTANGLE
+        "
+      >
         <i class="bi bi-square"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Circle">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Circle"
+        (click)="selectTool(Tool.CIRCLE)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.CIRCLE
+        "
+      >
         <i class="bi bi-circle"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Arrow">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Arrow"
+        (click)="selectTool(Tool.ARROW)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.ARROW
+        "
+      >
         <i class="bi bi-arrow-up-right"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Text">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Text"
+        (click)="selectTool(Tool.TEXT)"
+        [class.active]="
+          whiteboard.activeTool() === Tool.TEXT
+        "
+      >
         <i class="bi bi-type"></i>
       </button>
+
     </div>
 
   </div>
 
 
   <!-- Right -->
+
   <div class="app-toolbar-right">
 
     <div class="toolbar-group">
 
-      <button class="toolbar-btn" type="button" title="Undo">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Undo"
+        (click)="undo()"
+      >
         <i class="bi bi-arrow-counterclockwise"></i>
       </button>
 
-      <button class="toolbar-btn" type="button" title="Redo">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Redo"
+        (click)="redo()"
+      >
         <i class="bi bi-arrow-clockwise"></i>
       </button>
 
@@ -67,13 +155,25 @@
 
     <div class="toolbar-group">
 
-      <button class="toolbar-btn" type="button" title="Zoom Out">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Zoom Out"
+        (click)="zoomOut()"
+      >
         <i class="bi bi-dash-lg"></i>
       </button>
 
-      <span class="toolbar-zoom">100%</span>
+      <span class="toolbar-zoom">
+        {{ whiteboard.zoom() * 100 | number:'1.0-0' }}%
+      </span>
 
-      <button class="toolbar-btn" type="button" title="Zoom In">
+      <button
+        class="toolbar-btn"
+        type="button"
+        title="Zoom In"
+        (click)="zoomIn()"
+      >
         <i class="bi bi-plus-lg"></i>
       </button>
 
@@ -83,7 +183,12 @@
 
 
     <!-- Avatar -->
-    <button class="toolbar-btn avatar-btn" type="button" title="Profile">
+
+    <button
+      class="toolbar-btn avatar-btn"
+      type="button"
+      title="Profile"
+    >
       <img
         src="https://placehold.co/400"
         alt="Profile"
@@ -91,11 +196,11 @@
       >
     </button>
 
-
     <span class="toolbar-separator"></span>
 
 
-    <!-- More Dropdown -->
+    <!-- More -->
+
     <div class="toolbar-dropdown">
 
       <button
@@ -109,41 +214,75 @@
         <i class="bi bi-three-dots"></i>
       </button>
 
-
       @if (isMoreMenuOpen) {
 
         <div class="dropdown-menu">
 
-          <button class="dropdown-item" type="button">
+          <button
+            class="dropdown-item"
+            type="button"
+            (click)="clearCanvas()"
+          >
             <i class="bi bi-trash3"></i>
             <span>Clear canvas</span>
           </button>
 
-          <button class="dropdown-item" type="button">
+          <button
+            class="dropdown-item"
+            type="button"
+            (click)="exportCanvas()"
+          >
             <i class="bi bi-download"></i>
             <span>Export</span>
           </button>
 
-          <button class="dropdown-item" type="button">
+          <label
+            class="dropdown-item"
+            for="whiteboard-import"
+          >
             <i class="bi bi-upload"></i>
             <span>Import</span>
-          </button>
+          </label>
+
+          <input
+            id="whiteboard-import"
+            type="file"
+            accept=".json,application/json"
+            hidden
+            (change)="importCanvas($event)"
+          >
 
           <div class="dropdown-divider"></div>
 
-          <button class="dropdown-item" type="button">
+          <button
+            class="dropdown-item"
+            type="button"
+            (click)="toggleGrid()"
+          >
             <i class="bi bi-grid-3x3"></i>
-            <span>Show grid</span>
+
+            <span>
+              {{ whiteboard.showGrid()
+                ? 'Hide grid'
+                : 'Show grid'
+              }}
+            </span>
           </button>
 
-          <button class="dropdown-item" type="button">
+          <button
+            class="dropdown-item"
+            type="button"
+          >
             <i class="bi bi-arrows-fullscreen"></i>
             <span>Fullscreen</span>
           </button>
 
           <div class="dropdown-divider"></div>
 
-          <button class="dropdown-item" type="button">
+          <button
+            class="dropdown-item"
+            type="button"
+          >
             <i class="bi bi-gear"></i>
             <span>Settings</span>
           </button>
