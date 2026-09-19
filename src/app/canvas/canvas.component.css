@@ -5,18 +5,35 @@
   overflow: hidden;
 }
 
-.canvas-container.grid{
+.canvas-container.grid {
   background-size: 25px 25px;
   background-image:
     linear-gradient(to right, #f5f4f41a 1px, transparent 1px),
     linear-gradient(to bottom, #f5f4f41a 1px, transparent 1px);
 }
 
-
 .canvas-container canvas {
   display: block;
   width: 100%;
   height: 100%;
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.canvas-container canvas[data-tool="PEN"],
+.canvas-container canvas[data-tool="HIGHLIGHTER"],
+.canvas-container canvas[data-tool="LINE"],
+.canvas-container canvas[data-tool="RECTANGLE"],
+.canvas-container canvas[data-tool="CIRCLE"],
+.canvas-container canvas[data-tool="ARROW"] {
   cursor: crosshair;
+}
+
+.canvas-container canvas[data-tool="TEXT"] {
+  cursor: text;
+}
+
+.canvas-container canvas[data-tool="ERASER"] {
+  cursor: url('/assets/eraser-icon.png') 8 8, auto;
 }

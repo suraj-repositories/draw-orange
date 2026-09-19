@@ -1,8 +1,18 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild, effect, inject} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  ViewChild,
+  effect,
+  inject
+} from '@angular/core';
+
 import { DrawingService } from '../services/drawing.service';
 import { WhiteboardStateService } from '../services/whiteboard-state.service';
 import { Tool } from '../models/tool.model';
 import { Point } from '../models/element.model';
+
 import { PenTool } from '../tools/pen.tool';
 import { HighlighterTool } from '../tools/highlighter.tool';
 import { LineTool } from '../tools/line.tool';
@@ -21,7 +31,6 @@ import { TextTool } from '../tools/text.tool';
 })
 export class CanvasComponent implements AfterViewInit {
   @ViewChild('canvasElement') canvasRef!: ElementRef<HTMLCanvasElement>;
-
 
   private state = inject(WhiteboardStateService);
   private drawing = inject(DrawingService);
@@ -44,6 +53,7 @@ export class CanvasComponent implements AfterViewInit {
       this.state.elements();
       this.state.zoom();
       this.state.showGrid();
+
       if (this.canvasRef?.nativeElement) {
         this.render();
       }
@@ -62,31 +72,31 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   onPointerDown(event: PointerEvent): void {
+    const canvas = this.canvasRef.nativeElement;
+    canvas.setPointerCapture(event.pointerId);
+
     const point = this.getPoint(event);
-    const currentColor = this.state.strokeColor();
-    const currentStokeWidth = this.state.strokeColor();
     const tool = this.state.activeTool();
+    const currentColor = this.state.strokeColor();
+    const currentStrokeWidth = this.state.strokeColor();
 
     if (tool === Tool.TEXT) {
       const text = window.prompt('Enter text');
       if (text) {
-        const element = this.textTool.create(point, text, currentColor, currentStokeWidth);
+        const element = this.textTool.create(
+          point,
+          text,
+          currentColor,
+          currentStrokeWidth
+        );
         this.state.addElement(element);
       }
       return;
     }
 
     if (tool === Tool.ERASER) {
-      const elements = this.eraserTool.findElementsToDelete(
-        point,
-        this.state.elements()
-      );
-
-      if (elements.length) {
-        const ids = new Set(elements.map((e) => e.id));
-        const remaining = this.state.elements().filter((e) => !ids.has(e.id));
-        this.state.updateElements(remaining);
-      }
+      this.isDrawing = true;
+      this.eraseAtPoint(point);
       return;
     }
 
@@ -96,10 +106,17 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   onPointerMove(event: PointerEvent): void {
-    if (!this.isDrawing) return;
+    if (!this.isDrawing) {
+      return;
+    }
 
     const point = this.getPoint(event);
     const tool = this.state.activeTool();
+
+    if (tool === Tool.ERASER) {
+      this.eraseAtPoint(point);
+      return;
+    }
 
     if (tool === Tool.PEN || tool === Tool.HIGHLIGHTER) {
       this.currentPoints.push(point);
@@ -108,32 +125,88 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   onPointerUp(event: PointerEvent): void {
-    if (!this.isDrawing || !this.startPoint) return;
+    if (!this.isDrawing) {
+      this.releasePointer(event);
+      return;
+    }
+
+    const tool = this.state.activeTool();
+
+    if (tool === Tool.ERASER) {
+      this.isDrawing = false;
+      this.startPoint = null;
+      this.currentPoints = [];
+
+      this.releasePointer(event);
+      this.render();
+      return;
+    }
+
+    if (!this.startPoint) {
+      this.isDrawing = false;
+      this.currentPoints = [];
+
+      this.releasePointer(event);
+      return;
+    }
 
     const endPoint = this.getPoint(event);
-    const tool = this.state.activeTool();
     const currentColor = this.state.strokeColor();
-    const currentStokeWidth = this.state.strokeColor();
+    const currentStrokeWidth = this.state.strokeWidth();
+
     let element = null;
 
     switch (tool) {
       case Tool.PEN:
-        element = this.penTool.create(this.currentPoints, currentColor, currentStokeWidth);
+        element = this.penTool.create(
+          this.currentPoints,
+          currentColor,
+          currentStrokeWidth
+        );
         break;
+
       case Tool.HIGHLIGHTER:
-        element = this.highlighterTool.create(this.currentPoints, currentColor, 15);
+        element = this.highlighterTool.create(
+          this.currentPoints,
+          currentColor,
+          15
+        );
         break;
+
       case Tool.LINE:
-        element = this.lineTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
+        element = this.lineTool.create(
+          this.startPoint,
+          endPoint,
+          currentColor,
+          currentStrokeWidth
+        );
         break;
+
       case Tool.RECTANGLE:
-        element = this.rectangleTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
+        element = this.rectangleTool.create(
+          this.startPoint,
+          endPoint,
+          currentColor,
+          currentStrokeWidth
+        );
         break;
+
       case Tool.CIRCLE:
-        element = this.circleTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
+        element = this.circleTool.create(
+          this.startPoint,
+          endPoint,
+          currentColor,
+          currentStrokeWidth
+        );
         break;
+
       case Tool.ARROW:
-        element = this.arrowTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
+        element = this.arrowTool.create(
+          this.startPoint,
+          endPoint,
+          currentColor,
+          currentStrokeWidth
+        );
         break;
     }
 
@@ -144,7 +217,42 @@ export class CanvasComponent implements AfterViewInit {
     this.isDrawing = false;
     this.startPoint = null;
     this.currentPoints = [];
+
+    this.releasePointer(event);
     this.render();
+  }
+
+  onPointerCancel(event: PointerEvent): void {
+    this.isDrawing = false;
+    this.startPoint = null;
+    this.currentPoints = [];
+
+    this.releasePointer(event);
+    this.render();
+  }
+
+  private eraseAtPoint(point: Point): void {
+    const elements = this.eraserTool.findElementsToDelete(
+      point,
+      this.state.elements()
+    );
+
+    if (!elements.length) {
+      return;
+    }
+
+    const ids = new Set(elements.map(element => element.id));
+    const remaining = this.state.elements().filter(element => !ids.has(element.id));
+
+    this.state.updateElements(remaining);
+  }
+
+  private releasePointer(event: PointerEvent): void {
+    const canvas = this.canvasRef.nativeElement;
+
+    if (canvas.hasPointerCapture(event.pointerId)) {
+      canvas.releasePointerCapture(event.pointerId);
+    }
   }
 
   private getPoint(event: PointerEvent): Point {
@@ -162,7 +270,9 @@ export class CanvasComponent implements AfterViewInit {
     const canvas = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
 
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     this.drawing.render(
       ctx,
@@ -178,16 +288,21 @@ export class CanvasComponent implements AfterViewInit {
     const canvas = this.canvasRef.nativeElement;
     const ctx = canvas.getContext('2d');
 
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     this.render();
 
-    if (this.currentPoints.length < 2) return;
+    if (this.currentPoints.length < 2) {
+      return;
+    }
 
     ctx.save();
     ctx.scale(this.state.zoom(), this.state.zoom());
 
     const isHighlighter = this.state.activeTool() === Tool.HIGHLIGHTER;
+
     ctx.strokeStyle = this.state.strokeColor();
     ctx.globalAlpha = isHighlighter ? 0.35 : 1;
     ctx.lineWidth = isHighlighter ? 15 : 2;
@@ -211,12 +326,19 @@ export class CanvasComponent implements AfterViewInit {
 
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
+
     canvas.style.width = `${rect.width}px`;
     canvas.style.height = `${rect.height}px`;
 
     const ctx = canvas.getContext('2d');
+
     if (ctx) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
   }
+
+  get currentTool(): string {
+    return this.state.activeTool()?.toUpperCase() ?? '';
+  }
+
 }

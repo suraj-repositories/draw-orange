@@ -95,7 +95,6 @@
 
             }
 
-            <!-- Custom color -->
             <label class="color-option custom-color" title="Custom color" (click)="$event.stopPropagation()">
               <i class="bi bi-eyedropper"></i>
               <input type="color" [value]="selectedColor" (change)="selectCustomColor($event)"
@@ -115,12 +114,8 @@
   </div>
 
 
-  <!-- Right -->
-
   <div class="app-toolbar-right">
-
     <div class="toolbar-group">
-
       <button class="toolbar-btn" type="button" title="Undo" (click)="undo()">
         <i class="bi bi-arrow-counterclockwise"></i>
       </button>

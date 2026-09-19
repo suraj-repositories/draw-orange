@@ -11,7 +11,7 @@ export class WhiteboardStateService {
   private history = new HistoryService();
   readonly elements = signal<WhiteboardElement[]>([]);
   readonly activeTool = signal<Tool>(Tool.SELECT);
-  readonly strokeColor = signal<string>('#000000');
+  readonly strokeColor = signal<string>('#ff9800');
   readonly strokeWidth = signal<any>(2);
 
   readonly zoom = signal(1);

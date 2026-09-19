@@ -1,11 +1,7 @@
 <div class="canvas-container">
 
-  <canvas
-    #canvasElement
-    (pointerdown)="onPointerDown($event)"
-    (pointermove)="onPointerMove($event)"
-    (pointerup)="onPointerUp($event)"
-    (pointerleave)="onPointerUp($event)"
-  ></canvas>
+  <canvas [attr.data-tool]="currentTool" #canvasElement (pointerdown)="onPointerDown($event)" (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)" (pointercancel)="onPointerCancel($event)">
+  </canvas>
 
 </div>

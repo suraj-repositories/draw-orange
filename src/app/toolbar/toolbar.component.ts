@@ -20,19 +20,18 @@ export class ToolbarComponent {
 
   isMoreMenuOpen = false;
   isColorPickerOpen = false;
-
-  selectedColor = '#000000';
+  selectedColor = '#ff9800';
 
   predefinedColors = [
+    '#ff9800',
     '#000000',
     '#ffffff',
-    '#f44336',
     '#9c27b0',
     '#673ab7',
-    '#03a9f4',
-    '#4caf50',
+    '#f44336',
     '#ffeb3b',
-    '#ff9800',
+    '#4caf50',
+    '#03a9f4',
   ];
 
   constructor(private elementRef: ElementRef) { }
