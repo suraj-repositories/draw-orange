@@ -4,21 +4,20 @@ export class CircleTool {
 
   create(
     start: Point,
-    end: Point
+    end: Point,
+    stroke: string,
+    strokeWidth: any
   ): WhiteboardElement {
 
     return {
       id: crypto.randomUUID(),
       type: 'circle',
-
       x: Math.min(start.x, end.x),
       y: Math.min(start.y, end.y),
-
       width: Math.abs(end.x - start.x),
       height: Math.abs(end.y - start.y),
-
-      stroke: '#f57c00',
-      strokeWidth: 2
+      stroke: stroke,
+      strokeWidth: strokeWidth
     };
   }
 }

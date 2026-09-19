@@ -2,14 +2,14 @@ import { Point, WhiteboardElement } from '../models/element.model';
 
 export class PenTool {
 
-  create(points: Point[]): WhiteboardElement {
+  create(points: Point[], stroke: string, strokeWidth: any): WhiteboardElement {
 
     return {
       id: crypto.randomUUID(),
       type: 'stroke',
       points,
-      stroke: '#f57c00',
-      strokeWidth: 2
+      stroke,
+      strokeWidth
     };
   }
 }

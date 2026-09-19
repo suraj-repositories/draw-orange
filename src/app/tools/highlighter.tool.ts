@@ -2,7 +2,7 @@ import { Point, WhiteboardElement } from '../models/element.model';
 
 export class HighlighterTool {
 
-  create(points: Point[]): WhiteboardElement {
+  create(points: Point[], stroke: string, strokeWidth: any): WhiteboardElement {
 
     return {
       id: crypto.randomUUID(),
@@ -10,8 +10,8 @@ export class HighlighterTool {
 
       points,
 
-      stroke: '#f57c00',
-      strokeWidth: 15,
+      stroke: stroke,
+      strokeWidth: strokeWidth,
       opacity: 0.35
     };
   }

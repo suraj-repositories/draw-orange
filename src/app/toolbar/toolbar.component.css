@@ -87,15 +87,16 @@
   flex-shrink: 0;
 }
 
-.toolbar-btn .avatar{
+.toolbar-btn .avatar {
   width: 38px;
   height: 38px;
   border-radius: 50%;
   border: 1px solid #909090be;
   object-fit: contain;
-  padding: 2px ;
+  padding: 2px;
 }
-.toolbar-btn:has(.avatar){
+
+.toolbar-btn:has(.avatar) {
   border-radius: 50%;
 }
 
@@ -225,4 +226,114 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+.color-picker {
+  position: relative;
+}
+
+.color-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.current-color {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #000;
+  border: 2px solid #53535326;
+  box-sizing: border-box;
+}
+
+.color-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  padding: 10px;
+  width: 210px;
+  padding: 12px;
+
+  border-radius: 10px;
+
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+
+  z-index: 1000;
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 30px);
+  gap: 10px;
+  justify-content: center;
+}
+
+.color-option {
+  position: relative;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.color-option:hover {
+  transform: scale(1.12);
+}
+
+.color-option.selected {
+  box-shadow:
+    0 0 0 2px var(--toolbar-bg, #fff),
+    0 0 0 4px #f57c00;
+}
+
+.color-option[style*="#ffffff"] {
+  border-color: #aaa;
+}
+
+.custom-color {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    conic-gradient(#f44336,
+      #ffeb3b,
+      #4caf50,
+      #2196f3,
+      #9c27b0,
+      #f44336);
+
+  color: #fff;
+  overflow: hidden;
+  background-attachment: local;
+  background-size: cover;
+}
+
+.custom-color i {
+  font-size: 13px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+.custom-color input[type="color"] {
+  position: absolute;
+
+  width: 100%;
+  height: 100%;
+
+  inset: 0;
+
+  opacity: 0;
+  cursor: pointer;
 }

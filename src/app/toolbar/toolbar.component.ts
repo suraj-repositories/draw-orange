@@ -1,42 +1,41 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  inject
-} from '@angular/core';
+import { Component, ElementRef, HostListener, inject } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 
-import { WhiteboardStateService }
-  from '../services/whiteboard-state.service';
-
-import { ExportService }
-  from '../services/export.service';
-
-import { Tool }
-  from '../models/tool.model';
+import { WhiteboardStateService } from '../services/whiteboard-state.service';
+import { ExportService } from '../services/export.service';
+import { Tool } from '../models/tool.model';
 
 @Component({
   selector: 'app-toolbar',
   standalone: true,
   imports: [DecimalPipe],
   templateUrl: './toolbar.component.html',
-  styleUrl: './toolbar.component.css'
+  styleUrl: './toolbar.component.css',
 })
 export class ToolbarComponent {
-
-  readonly whiteboard =
-    inject(WhiteboardStateService);
-
-  private exportService =
-    inject(ExportService);
+  readonly whiteboard = inject(WhiteboardStateService);
+  private exportService = inject(ExportService);
 
   readonly Tool = Tool;
 
   isMoreMenuOpen = false;
+  isColorPickerOpen = false;
 
-  constructor(
-    private elementRef: ElementRef
-  ) {}
+  selectedColor = '#000000';
+
+  predefinedColors = [
+    '#000000',
+    '#ffffff',
+    '#f44336',
+    '#9c27b0',
+    '#673ab7',
+    '#03a9f4',
+    '#4caf50',
+    '#ffeb3b',
+    '#ff9800',
+  ];
+
+  constructor(private elementRef: ElementRef) { }
 
   selectTool(tool: Tool): void {
     this.whiteboard.setTool(tool);
@@ -59,36 +58,22 @@ export class ToolbarComponent {
   }
 
   clearCanvas(): void {
-
-    if (
-      confirm(
-        'Are you sure you want to clear the canvas?'
-      )
-    ) {
+    if (confirm('Are you sure you want to clear the canvas?')) {
       this.whiteboard.clearCanvas();
     }
 
-    this.closeMoreMenu();
+    this.finalize();
   }
 
   exportCanvas(): void {
+    this.exportService.export(this.whiteboard.elements());
 
-    this.exportService.export(
-      this.whiteboard.elements()
-    );
-
-    this.closeMoreMenu();
+    this.finalize();
   }
 
-  importCanvas(
-    event: Event
-  ): void {
-
-    const input =
-      event.target as HTMLInputElement;
-
-    const file =
-      input.files?.[0];
+  importCanvas(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
 
     if (!file) {
       return;
@@ -96,63 +81,84 @@ export class ToolbarComponent {
 
     this.exportService
       .import(file)
-      .then(elements => {
-
-        this.whiteboard.setElements(
-          elements
-        );
-
+      .then((elements) => {
+        this.whiteboard.setElements(elements);
       })
       .catch(() => {
-
-        alert(
-          'Invalid whiteboard file.'
-        );
-
+        alert('Invalid whiteboard file.');
       });
 
     input.value = '';
 
-    this.closeMoreMenu();
+    this.finalize();
   }
 
   toggleGrid(): void {
-
     this.whiteboard.toggleGrid();
 
-    this.closeMoreMenu();
+    this.finalize();
   }
 
   toggleMoreMenu(): void {
-    this.isMoreMenuOpen =
-      !this.isMoreMenuOpen;
+    this.isMoreMenuOpen = !this.isMoreMenuOpen;
+
+    if (this.isMoreMenuOpen) {
+      this.closeColorPickerMenu();
+    }
   }
 
   closeMoreMenu(): void {
     this.isMoreMenuOpen = false;
   }
 
-  @HostListener(
-    'document:click',
-    ['$event']
-  )
-  onDocumentClick(
-    event: MouseEvent
-  ): void {
+  toggleColorPickerMenu(): void {
+    this.isColorPickerOpen = !this.isColorPickerOpen;
 
-    if (!this.isMoreMenuOpen) {
+    if (this.isColorPickerOpen) {
+      this.closeMoreMenu();
+    }
+  }
+
+  closeColorPickerMenu(): void {
+    this.isColorPickerOpen = false;
+  }
+
+  selectColor(color: string): void {
+    this.selectedColor = color;
+
+    this.whiteboard.setStrokeColor(color);
+    console.log('Selected color:', this.selectedColor);
+
+    this.closeColorPickerMenu();
+  }
+
+  selectCustomColor(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (!input.value) {
       return;
     }
 
-    const target =
-      event.target as Node;
+    this.selectedColor = input.value;
+    this.whiteboard.setStrokeColor(this.selectedColor);
+    console.log('Selected custom color:', this.selectedColor);
+  }
 
-    if (
-      !this.elementRef
-        .nativeElement
-        .contains(target)
-    ) {
-      this.closeMoreMenu();
+  finalize(): void {
+    this.closeMoreMenu();
+    this.closeColorPickerMenu();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.isMoreMenuOpen && !this.isColorPickerOpen) {
+      return;
+    }
+
+    const target = event.target as Node;
+
+    if (!this.elementRef.nativeElement.contains(target)) {
+      this.finalize();
     }
   }
 }

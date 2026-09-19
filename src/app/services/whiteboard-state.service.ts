@@ -11,6 +11,9 @@ export class WhiteboardStateService {
   private history = new HistoryService();
   readonly elements = signal<WhiteboardElement[]>([]);
   readonly activeTool = signal<Tool>(Tool.SELECT);
+  readonly strokeColor = signal<string>('#000000');
+  readonly strokeWidth = signal<any>(2);
+
   readonly zoom = signal(1);
   readonly showGrid = signal(false);
   setTool(tool: Tool): void {
@@ -74,5 +77,9 @@ export class WhiteboardStateService {
   setElements(elements: WhiteboardElement[]): void {
     this.elements.set(elements);
     this.history.clear();
+  }
+
+  setStrokeColor(color: string): void {
+    this.strokeColor.set(color);
   }
 }

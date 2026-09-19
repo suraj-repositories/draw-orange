@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, effect, inject} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, ViewChild, effect, inject} from '@angular/core';
 import { DrawingService } from '../services/drawing.service';
 import { WhiteboardStateService } from '../services/whiteboard-state.service';
 import { Tool } from '../models/tool.model';
@@ -21,6 +21,7 @@ import { TextTool } from '../tools/text.tool';
 })
 export class CanvasComponent implements AfterViewInit {
   @ViewChild('canvasElement') canvasRef!: ElementRef<HTMLCanvasElement>;
+
 
   private state = inject(WhiteboardStateService);
   private drawing = inject(DrawingService);
@@ -62,12 +63,14 @@ export class CanvasComponent implements AfterViewInit {
 
   onPointerDown(event: PointerEvent): void {
     const point = this.getPoint(event);
+    const currentColor = this.state.strokeColor();
+    const currentStokeWidth = this.state.strokeColor();
     const tool = this.state.activeTool();
 
     if (tool === Tool.TEXT) {
       const text = window.prompt('Enter text');
       if (text) {
-        const element = this.textTool.create(point, text);
+        const element = this.textTool.create(point, text, currentColor, currentStokeWidth);
         this.state.addElement(element);
       }
       return;
@@ -109,26 +112,28 @@ export class CanvasComponent implements AfterViewInit {
 
     const endPoint = this.getPoint(event);
     const tool = this.state.activeTool();
+    const currentColor = this.state.strokeColor();
+    const currentStokeWidth = this.state.strokeColor();
     let element = null;
 
     switch (tool) {
       case Tool.PEN:
-        element = this.penTool.create(this.currentPoints);
+        element = this.penTool.create(this.currentPoints, currentColor, currentStokeWidth);
         break;
       case Tool.HIGHLIGHTER:
-        element = this.highlighterTool.create(this.currentPoints);
+        element = this.highlighterTool.create(this.currentPoints, currentColor, 15);
         break;
       case Tool.LINE:
-        element = this.lineTool.create(this.startPoint, endPoint);
+        element = this.lineTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
         break;
       case Tool.RECTANGLE:
-        element = this.rectangleTool.create(this.startPoint, endPoint);
+        element = this.rectangleTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
         break;
       case Tool.CIRCLE:
-        element = this.circleTool.create(this.startPoint, endPoint);
+        element = this.circleTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
         break;
       case Tool.ARROW:
-        element = this.arrowTool.create(this.startPoint, endPoint);
+        element = this.arrowTool.create(this.startPoint, endPoint, currentColor, currentStokeWidth);
         break;
     }
 
@@ -183,7 +188,7 @@ export class CanvasComponent implements AfterViewInit {
     ctx.scale(this.state.zoom(), this.state.zoom());
 
     const isHighlighter = this.state.activeTool() === Tool.HIGHLIGHTER;
-    ctx.strokeStyle = '#f57c00';
+    ctx.strokeStyle = this.state.strokeColor();
     ctx.globalAlpha = isHighlighter ? 0.35 : 1;
     ctx.lineWidth = isHighlighter ? 15 : 2;
     ctx.lineCap = 'round';

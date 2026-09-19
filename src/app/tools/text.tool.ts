@@ -4,7 +4,9 @@ export class TextTool {
 
   create(
     point: Point,
-    text: string
+    text: string,
+    stroke: string,
+    strokeWidth: any
   ): WhiteboardElement {
 
     return {
@@ -16,8 +18,8 @@ export class TextTool {
 
       text,
 
-      stroke: '#1e1f22',
-      strokeWidth: 3
+      stroke: stroke,
+      strokeWidth: strokeWidth
     };
   }
 }

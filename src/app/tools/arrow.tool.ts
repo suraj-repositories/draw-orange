@@ -4,7 +4,9 @@ export class ArrowTool {
 
   create(
     start: Point,
-    end: Point
+    end: Point,
+    stroke: string,
+    strokeWidth: any
   ): WhiteboardElement {
 
     return {
@@ -17,8 +19,8 @@ export class ArrowTool {
       x2: end.x,
       y2: end.y,
 
-      stroke: '#f57c00',
-      strokeWidth: 2
+      stroke: stroke,
+      strokeWidth: strokeWidth
     };
   }
 }
